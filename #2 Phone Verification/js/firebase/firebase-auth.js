@@ -5,6 +5,8 @@ import {
   updateProfile,
   sendEmailVerification,
   sendPasswordResetEmail,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
 } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 
 // 회원가입 함수
@@ -53,5 +55,28 @@ export const login = async (email, password) => {
 };
 
 export const resetPassword = async (email) => {
-    await sendPasswordResetEmail(auth, email);
-}
+  await sendPasswordResetEmail(auth, email);
+};
+
+export const setupRecaptcha = (containerID) => {
+  if (window.recaptchaVerifier) {
+    window.recaptchaVerifier.clear();
+  }
+
+  window.recaptchaVerifier = new RecaptchaVerifier(auth, containerID, {
+    size: "normal",
+    callback: () => {},
+  });
+
+  return window.recaptchaVerifier;
+};
+
+export const sendVerificationCode = async (phoneNumber, recaptchaVerifier) => {
+  const confirmationResult = await signInWithPhoneNumber(
+    auth,
+    phoneNumber,
+    recaptchaVerifier
+  );
+  window.confirmationResult = confirmationResult;
+  return confirmationResult;
+};
