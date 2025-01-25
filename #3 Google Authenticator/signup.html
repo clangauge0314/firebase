@@ -8,6 +8,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="module" src="./js/signup.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/jiangts/JS-OTP/dist/jsOTP.min.js"></script>
   </head>
   <body class="bg-gray-100 flex items-center justify-center h-screen">
     <div class="bg-white shadow-lg rounded-lg w-11/12 sm:w-96 p-6">
@@ -74,6 +75,30 @@
             placeholder="비밀번호를 다시 입력하세요"
             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
+        </div>
+
+        <div id="qr-code-container" class="hidden text-center space-y-4">
+          <p class="text-sm text-gray-600">
+            Google Authenticator로 아래 QR 코드를 스캔하세요
+          </p>
+          <div id="qr-code" class="flex justify-center"></div>
+          <div>
+            <label
+              for="otp-code"
+              class="block text-sm font-medium text-gray-700"
+            >
+              인증번호
+            </label>
+            <input
+              type="text"
+              id="otp-code"
+              name="otp-code"
+              placeholder="6자리 인증번호를 입력하세요"
+              maxlength="6"
+              pattern="[0-9]{6}"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
         </div>
 
         <div

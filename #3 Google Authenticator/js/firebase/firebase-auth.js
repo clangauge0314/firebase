@@ -3,7 +3,6 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
-  sendEmailVerification,
   sendPasswordResetEmail,
 } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 
@@ -41,8 +40,6 @@ export const signup = async (email, password, displayName) => {
   await updateProfile(userCredential.user, {
     displayName: displayName,
   });
-
-  await sendEmailVerification(userCredential.user);
 
   return userCredential.user;
 };
