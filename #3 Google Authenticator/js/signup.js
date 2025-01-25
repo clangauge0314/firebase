@@ -84,6 +84,8 @@ submitButton.addEventListener("click", async () => {
     }
 
     const user = await signup(email, password, name);
+    localStorage.setItem(`2fa_${user.uid}`, tempSecret);
+
     alert("회원가입에 성공했습니다.")
     window.location.href = "login.html";
     console.log("가입된 사용자: ", user);

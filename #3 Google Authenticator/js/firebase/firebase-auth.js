@@ -53,10 +53,6 @@ export const login = async (email, password) => {
       password
     );
 
-    if (!userCredential.user.emailVerified) {
-      throw new Error("이메일 인증이 필요합니다. 이메일을 확인해주세요.");
-    }
-
     console.log("로그인 성공: ", userCredential.user);
     return userCredential.user;
   } catch (error) {
