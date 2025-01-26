@@ -9,6 +9,10 @@ import {
   GithubAuthProvider,
   signInWithPopup,
   signOut,
+  deleteUser,
+  reauthenticateWithCredential,
+  reauthenticateWithPopup,
+  EmailAuthProvider
 } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 
 // 회원가입 함수
@@ -114,3 +118,45 @@ export const logout = async () => {
     console.error("로그아웃 실패: ", error);
   }
 };
+
+export const deleteAccount = async () => {
+  try {
+    const user = auth.currentUser;
+
+    if(!user) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    if(user.providerData.some((provider) => provider.providerId == "google.com")) {
+      const provider = new GoogleAuthProvider();
+      await reauthenticateWithPopup(user, provider);
+      alert("Google 사용자 재인증 성공");
+    } else if(user.providerData.some((provider) => provider.providerId == "github.com")) {
+      const provider = new GithubAuthProvider();
+      await reauthenticateWithPopup(user, provider);
+      alert("Github 사용자 재인증 성공");
+    } else {
+      const email = user.email;
+      const password = prompt("비밀번호를 입력하세요: ");
+      if(!password) {
+        alert("비밀번호를 입력해야합니다.")
+        return;
+      }
+      const credential = EmailAuthProvider.credential(email, password);
+      await reauthenticateWithCredential(user, credential);
+      alert("이메일 사용자 재인증 성공")
+    }
+
+    await deleteUser(user);
+    alert("계정이 성공적으로 삭제되었습니다.");
+    window.location.href = "signup.html";
+  } catch(error) {
+    if(error.code === "auth/requires-recent-login") {
+      alert("최근 인증 정보가 필요합니다. 다시 로그인 후 시도해주세요.")
+    } else {
+      console.error("계정 삭제 실패: ", error.message);
+      alert("계정을 삭제할 수 없습니다. 다시 시도해주세요.")
+    }
+  }
+}
