@@ -1,5 +1,5 @@
 import { auth } from "./firebase/firebase-init.js";
-import { logout } from "./firebase/firebase-auth.js";
+import { logout, deleteAccount } from "./firebase/firebase-auth.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 
 onAuthStateChanged(auth, (user) => {
@@ -23,3 +23,15 @@ document.getElementById("logout-button").addEventListener("click", async () => {
     alert("로그아웃에 실패했습니다. 다시 시도해주세요.");
   }
 });
+
+document.getElementById("delete-account-button").addEventListener("click", async () => {
+    try {
+        const confirmed = confirm("정말로 계정을 삭제하시겠습니까?");
+        if(!confirmed) return;
+
+        await deleteAccount();
+    } catch(error) {
+        console.error("계정 삭제 실패: ", error.message);
+        alert(error.message);
+    }
+})

@@ -5,7 +5,7 @@ import {
   updateProfile,
   sendEmailVerification,
   sendPasswordResetEmail,
-} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 
 // 회원가입 함수
 export const signup = async (email, password, displayName) => {
