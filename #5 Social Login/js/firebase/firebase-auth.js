@@ -6,8 +6,9 @@ import {
   sendEmailVerification,
   sendPasswordResetEmail,
   GoogleAuthProvider,
+  GithubAuthProvider,
   signInWithPopup,
-} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 
 // 회원가입 함수
 export const signup = async (email, password, displayName) => {
@@ -74,6 +75,26 @@ export const googleLogin = async() => {
     } else {
       console.error("google 로그인 실패: ", error);
       throw new Error("구글 로그인에 실패했습니다. 다시 시도해주세요");
+    }
+  }
+}
+
+export const githubLogin = async() => {
+  try {
+    const provider = new GithubAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    console.log("Github 로그인 성공: ", user);
+    return user;
+  } catch(error) {
+    if(error.code === "auth/popup-closed-by-user") {
+      throw new Error("로그인 창이 닫혔습니다. 다시 시도해주세요.");
+    } else if(error.code === "auth/network-request-failed") {
+      throw new Error("네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.");
+    } else {
+      console.error("Github 로그인 실패: ", error);
+      throw new Error("깃허브 로그인에 실패했습니다. 다시 시도해주세요");
     }
   }
 }
